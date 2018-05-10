@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="placeHolderImage">#F5F5F5</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="viewBg">#f1f5f8</color>
+    <color name="album_title">#4c4c4c</color>
+
+    <color name="colorPrimaryText">#050505</color>
+    <color name="colorDiagonalLayout">#F2F2F2</color>
+
+    <!--sign_in-->
+    <color name="activity_sing_in_background_color">#77B3D4</color>
+    <color name="activity_sing_in_color_buttonDark">#2E99E1</color>
+    <color name="activity_sing_in_color_buttonLight">#90CAF9</color>
+    <color name="activity_sing_colorPrimaryDark">#618fa9</color>
+    <color name="colorRegister">#6F96E2</color>
+</resources>

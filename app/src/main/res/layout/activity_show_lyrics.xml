@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activities.ShowLyricsActivity"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorDiagonalLayout">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            >
+            <!--<ImageView
+                android:id="@+id/disc_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_details_complaint_height_image_complaint"
+                android:src="@drawable/img_okcomputer"
+                android:clickable="true"
+                android:focusable="true"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/album"/>-->
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/disc_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/activity_details_complaint_height_image_complaint"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/album"
+                />
+
+            <TextView
+                android:id="@+id/name_song"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="56dp"
+                android:background="@color/colorWhite"
+                android:padding="12dp"
+                android:text="@string/title_song"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                />
+
+            <TextView
+                android:id="@+id/autor"
+                android:layout_width="130dp"
+                android:layout_height="40dp"
+                android:layout_alignLeft="@+id/name_song"
+                android:layout_alignStart="@+id/name_song"
+                android:layout_below="@+id/name_song"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="27dp"
+                android:background="@color/colorWhite"
+                android:padding="12dp"
+                android:text="@string/author"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_centerInParent="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/colorWhite"
+                android:layout_below="@+id/disc_image">
+
+                <ImageView
+                    android:id="@+id/download_song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_offline"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:contentDescription="TODO" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/text_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.4dp"
+                    android:background="@color/album_title"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/activity_show_lyrics_text_lyric"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="6dp" />
+
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.1dp"
+                    android:background="@color/album_title"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/card_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lyrics_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:isScrollContainer="false"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registroSignUp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/android_gradient_list"
+    android:fillViewport="true"
+    tools:context=".Activities.SignUpActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/imageContainerSignUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_sing_in_space_image"
+                android:paddingTop="@dimen/activity_sing_in_space_image">
+
+                <ImageView
+                    android:layout_width="@dimen/activity_sign_up_size_image"
+                    android:layout_height="@dimen/activity_sing_in_size_image"
+                    android:src="@drawable/ic_music4"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/editTextsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageContainerSignUp"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_sign_up_margin_horizontal_editText"
+                android:paddingRight="@dimen/activity_sign_up_margin_horizontal_editText"
+                android:layout_marginBottom="@dimen/activity_sign_up_margin_bottom_editText">
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColorHint="@color/colorWhite">
+
+                    <EditText
+                        android:id="@+id/name_sign_up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:inputType="textCapWords"
+                        android:drawableRight="@drawable/ic_name"
+                        android:hint="@string/activity_sign_up_name"
+                        app:backgroundTint="@color/colorWhite"
+                        tools:ignore="RtlHardcoded" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColorHint="@color/colorWhite">
+
+                    <EditText
+                        android:id="@+id/email_sign_Up"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorWhite"
+                        android:inputType="textEmailAddress"
+                        android:drawableRight="@drawable/ic_sl"
+                        android:hint="@string/activity_sign_up_email"
+                        app:backgroundTint="@color/colorWhite"
+                        tools:ignore="RtlHardcoded" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#FFFFFF">
+
+                    <EditText
+                        android:id="@+id/password_sign_up"
+                        android:drawableRight="@drawable/ic_padlock"
+                        android:layout_width="match_parent"
+                        android:textColor="@color/colorWhite"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/activity_sign_up_password"
+                        android:inputType="textPassword"
+                        app:backgroundTint="@color/colorWhite"
+                        tools:ignore="RtlHardcoded,TextFields" />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:background="@drawable/background_raised_button"
+                    android:text="@string/activity_sign_up_back_button"
+                    android:textColor="@color/colorWhite"
+                    tools:ignore="ButtonStyle" />
+
+                <Button
+                    android:id="@+id/sign_up_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:background="@drawable/background_raised_button"
+                    android:text="@string/activity_sign_up_sign_up_button"
+                    android:textColor="@color/colorWhite"
+                    tools:ignore="ButtonStyle" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

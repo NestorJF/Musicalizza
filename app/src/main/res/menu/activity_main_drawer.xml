@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lyrics"
+            android:icon="@drawable/ic_lyrics"
+            android:title="@string/activity_main_drawer_lyrics" />
+        <item
+            android:id="@+id/nav_albums"
+            android:icon="@drawable/ic_albums"
+            android:title="@string/activity_main_drawer_albums" />
+        <item
+            android:id="@+id/nav_artists"
+            android:icon="@drawable/ic_artists"
+            android:title="@string/activity_main_drawer_artists" />
+
+    </group>
+
+    <item android:title="@string/activity_main_drawer_me_group">
+        <menu>
+            <item
+                android:id="@+id/nav_offline_lyrics"
+                android:icon="@drawable/ic_offline"
+                android:title="@string/activity_main_drawer_offline_lyrics" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/activity_main_drawer_log_out" />
+        </menu>
+    </item>
+
+</menu>

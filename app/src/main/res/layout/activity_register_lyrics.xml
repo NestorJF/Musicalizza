@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:screenOrientation="portrait"
+    tools:context="com.example.nstorflores.musicalizza.Activities.RegisterLyricsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints,UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="ScrollViewSize">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/activity_new_complaint_padding_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:id="@+id/title_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:hint="@string/activity_new_complaint_title" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/activity_register_artist_text"/>
+
+                <Spinner
+                    android:id="@+id/artist_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="6dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/activity_register_lyrics_type_album"/>
+                <Spinner
+                    android:id="@+id/type_album_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="6dp"/>
+                <TextView
+                    android:id="@+id/type_album_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="@string/activity_register_lyrics_type_album_selected"/>
+                <Spinner
+                    android:id="@+id/album_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"/>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                <EditText
+                    android:id="@+id/lyrics_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:lines="10"
+                    android:maxLines="15"
+                    android:minLines="10"
+                    android:scrollbars="vertical"
+                    android:hint="@string/activity_register_lyrics_lyrics"
+                    />
+                </android.support.design.widget.TextInputLayout>
+
+
+                                    <!--<EditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:hint="@string/activity_new_complaint_description" />-->
+
+
+            </LinearLayout>
+
+            <!--<Button
+                android:id="@+id/maps"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/padding_layout"
+                android:layout_marginRight="@dimen/padding_layout"
+                android:background="@color/placeHolderImage"
+                android:drawableLeft="@drawable/ic_map"
+                android:text="@string/activity_new_complaint_set_location"
+                android:textColor="@color/colorPrimaryDark"
+                tools:ignore="RtlHardcoded"/>-->
+
+            <Button
+                android:id="@+id/register_lyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_layout"
+                android:layout_marginRight="@dimen/padding_layout"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="@string/activity_new_complaint_to_post"
+                android:theme="@style/RaisedButton" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>
