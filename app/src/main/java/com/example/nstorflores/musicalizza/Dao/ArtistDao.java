@@ -27,6 +27,9 @@ public interface ArtistDao {
     @Delete()
     void deleteAllArtists(ArtistDb artist);
 
+    @Query("DELETE FROM ArtistDb where id = :artistId")
+    public void deleteArtist(int artistId);
+
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     long insertAll(ArtistDb artist);
 

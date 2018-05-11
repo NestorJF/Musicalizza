@@ -29,6 +29,9 @@ public interface AlbumDao {
     @Delete()
     void deleteAllAlbums(AlbumDb album);
 
+    @Query("DELETE FROM AlbumDb where id = :albumId")
+    public void deleteAlbum(int albumId);
+
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     long insertAll(AlbumDb album);
 

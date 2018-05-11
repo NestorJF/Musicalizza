@@ -26,6 +26,7 @@ import com.example.nstorflores.musicalizza.modelsAPI.Song;
 import com.example.nstorflores.musicalizza.modelsDB.AlbumDb;
 import com.example.nstorflores.musicalizza.modelsDB.ArtistDb;
 import com.example.nstorflores.musicalizza.modelsDB.SongDb;
+import com.example.nstorflores.musicalizza.modelsDB.SongsAlbumDb;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
@@ -38,6 +39,7 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +75,7 @@ public class ShowLyricsActivity extends AppCompatActivity {
         discImage = findViewById(R.id.disc_image);
         downloadSong = findViewById(R.id.download_song);
 
-        songId = getIntent().getIntExtra(SongsAdapter.SONG_ID,0);
+
         offlineLyrics = getIntent().getIntExtra(MyOfflineSongsAdapter.OFFLINE_LYRICS,0);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
@@ -91,6 +93,7 @@ public class ShowLyricsActivity extends AppCompatActivity {
 
         if(offlineLyrics == 0)
         {
+            songId = getIntent().getIntExtra(SongsAdapter.SONG_ID,0);
             Call<Song> call = Api.instance().getSong(songId);
 
             call.enqueue(new Callback<Song>() {
@@ -129,7 +132,7 @@ public class ShowLyricsActivity extends AppCompatActivity {
         }
         else
         {
-
+            songId = getIntent().getIntExtra(MyOfflineSongsAdapter.SONG_ID,0);
             String imagePath = getIntent().getStringExtra(MyOfflineSongsAdapter.IMAGE_PATH);
             discImage.setImageURI(Uri.fromFile(new File(imagePath)));
 
@@ -167,59 +170,76 @@ public class ShowLyricsActivity extends AppCompatActivity {
                 AppDatabase db = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "Musicalizza").allowMainThreadQueries().fallbackToDestructiveMigration().build();
 
-                db.songDao().deleteTable();
-                db.artistDao().deleteTable();
-                db.albumDao().deleteTable();
+
+                //db.artistDao().deleteTable();
+
+                SongsAlbumDb songExiste = db.songDao().getSong(songId);
 
 
-                ArtistDb artistDb = new ArtistDb();
-                artistDb.setName(song.getAlbum().getArtist().getName());
-                artistDb.setAge(song.getAlbum().getArtist().getAge());
-                artistDb.setBiography(song.getAlbum().getArtist().getBiography());
-                artistDb.setCountry(song.getAlbum().getArtist().getCountry());
-                artistDb.setGenreId(song.getAlbum().getArtist().getGenreId());
-                artistDb.setImageId(song.getAlbum().getArtist().getImageId());
+                if (songExiste == null)
+                {
+                    ArtistDb artistDb = new ArtistDb();
+                    artistDb.setName(song.getAlbum().getArtist().getName());
+                    artistDb.setAge(song.getAlbum().getArtist().getAge());
+                    artistDb.setBiography(song.getAlbum().getArtist().getBiography());
+                    artistDb.setCountry(song.getAlbum().getArtist().getCountry());
+                    artistDb.setGenreId(song.getAlbum().getArtist().getGenreId());
+                    artistDb.setImageId(song.getAlbum().getArtist().getImageId());
 
-                long insertedArtistId = db.artistDao().insertAll(artistDb);
+                    long insertedArtistId = db.artistDao().insertAll(artistDb);
 
-                Log.i("Artista guardado:", "id " + insertedArtistId + ", name: "+ artistDb.getName());
-
-
-                AlbumDb albumDb = new AlbumDb();
-                albumDb.setArtistId((int) insertedArtistId);
-                albumDb.setGenreId(song.getAlbum().getGenreId());
-                albumDb.setImageId(song.getAlbum().getImageId());
-                albumDb.setName(song.getAlbum().getName());
-                albumDb.setType(song.getAlbum().getType());
-                albumDb.setYear(song.getAlbum().getYear());
-
-                long insertedAlbumId = db.albumDao().insertAll(albumDb);
-
-                Log.i("Album guardado:", "id " + insertedAlbumId + ", name: "+ albumDb.getName() + "artistaId: "+ albumDb.getArtistId());
+                    Log.i("Artista guardado:", "id " + insertedArtistId + ", name: "+ artistDb.getName());
 
 
+                    AlbumDb albumDb = new AlbumDb();
+                    albumDb.setArtistId((int) insertedArtistId);
+                    albumDb.setGenreId(song.getAlbum().getGenreId());
+                    albumDb.setImageId(song.getAlbum().getImageId());
+                    albumDb.setName(song.getAlbum().getName());
+                    albumDb.setType(song.getAlbum().getType());
+                    albumDb.setYear(song.getAlbum().getYear());
 
-                SongDb songDb = new SongDb();
-                songDb.setTitle(song.getTitle());
-                songDb.setLyric(song.getLyric());
-                songDb.setGenreId(song.getGenreId());
-                songDb.setAlbumId((int) insertedAlbumId);
-                songDb.setArtistId(song.getArtistId());
+                    long insertedAlbumId = db.albumDao().insertAll(albumDb);
 
-                long insertedSongid = db.songDao().insertAll(songDb);
+                    Log.i("Album guardado:", "id " + insertedAlbumId + ", name: "+ albumDb.getName() + "artistaId: "+ albumDb.getArtistId());
 
-                SongDb songResultado = db.songDao().getSong(songDb.getTitle());
-                Log.i("Cancion guardada", "id: "+ insertedSongid + " title " + songResultado.getTitle() + "albumId: "+ insertedAlbumId + ", letra: "+ songResultado.getLyric());
+
+
+                    SongDb songDb = new SongDb();
+                    songDb.setTitle(song.getTitle());
+                    songDb.setLyric(song.getLyric());
+                    songDb.setGenreId(song.getGenreId());
+                    songDb.setAlbumId((int) insertedAlbumId);
+                    songDb.setArtistId(song.getArtistId());
+
+                    long insertedSongid = db.songDao().insertAll(songDb);
+
+
+                    //Log.i("Cancion guardada", "id: "+ insertedSongid + " title " + songResultado.getTitle() + "albumId: "+ insertedAlbumId + ", letra: "+ songResultado.getLyric());
 
                 /*Toast.makeText(getBaseContext(), "Se han guardado y mostrado los datos con éxito",
                         Toast.LENGTH_LONG).show();*/
 
-                requestPermissions();
-                try {
-                    saveImageOnStorage(song.getAlbum().getImage().getUrl(), song.getAlbum().getName());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    requestPermissions();
+                    try {
+                        saveImageOnStorage(song.getAlbum().getImage().getUrl(), song.getAlbum().getName());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                else
+                {
+                    db.songDao().deleteSong(songExiste.getSongDb().getId());
+                    db.albumDao().deleteAlbum(songExiste.getSongDb().getAlbumId());
+                    db.artistDao().deleteArtist(songExiste.getAlbumDb().get(0).getArtistId());
+                    String direccionb = Environment.getExternalStorageDirectory()+ "/"+ songExiste.getAlbumDb().get(0).getName().replaceAll("\\s+","-") + ".jpg";
+                    Log.i("direccion a borrar", direccionb);
+                    new File(Environment.getExternalStorageDirectory()+ "/"+ songExiste.getAlbumDb().get(0).getName().replaceAll("\\s+","-") + ".jpg").delete();
+                    Toast.makeText(getBaseContext(), "Se ha eliminado la descarga de esta canción con éxito.",
+                            Toast.LENGTH_LONG).show();
+
+                }
+
             }
         });
     }
@@ -232,8 +252,8 @@ public class ShowLyricsActivity extends AppCompatActivity {
 
         URL url = new URL (urlImage);
         String newNameImage = nameImage.replaceAll("\\s+","-");
-        String storagePathImage = "/imagenesMusicalizza/";
         InputStream input = url.openStream();
+        //noinspection TryFinallyCanBeTryWithResources
         try {
             File storagePath = Environment.getExternalStorageDirectory();
             OutputStream output = new FileOutputStream(storagePath+ "/"+ newNameImage+ ".jpg");

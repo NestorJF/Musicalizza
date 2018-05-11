@@ -82,12 +82,15 @@ public class MyOfflineLyricsFragment extends Fragment {
 
         List<SongsAlbumDb> songsAlbumDbs = db.songDao().getSongsAlbumDb();
 
+        if(songsAlbumDbs!= null)
+        {
+            Log.i("AlbumSongs", "name song: "+songsAlbumDbs.get(0).getSongDb().getTitle());
+
+            MyOfflineSongsAdapter myOfflineSongsAdapter = new MyOfflineSongsAdapter(songsAlbumDbs);
+            recyclerView.setAdapter(myOfflineSongsAdapter);
+        }
 
 
-        Log.i("AlbumSongs", "name song: "+songsAlbumDbs.get(0).getSongDb().getTitle());
-
-        MyOfflineSongsAdapter myOfflineSongsAdapter = new MyOfflineSongsAdapter(songsAlbumDbs);
-        recyclerView.setAdapter(myOfflineSongsAdapter);
         /*for(int i = 0; i < albumSongsDbs.size(); i++)
         {
             Log.i("AlbumSongs", "name: "+albumSongsDbs.get(i).songs.get(0).getTitle());

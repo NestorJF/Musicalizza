@@ -21,12 +21,12 @@ import java.util.List;
 
 @Dao
 public interface SongDao {
-    @Query("Select * from SongDb where title like :nombre")
-    SongDb getSong(String nombre);
-
 
     @Delete()
     void deleteAllcancions(SongDb song);
+
+    @Query("DELETE FROM SongDb where id = :songId")
+    public void deleteSong(int songId);
 
     @Insert (onConflict = OnConflictStrategy.REPLACE)
     long insertAll(SongDb songs);
@@ -39,5 +39,8 @@ public interface SongDao {
 
     @Query("SELECT * FROM SongDb")
     List<SongsAlbumDb> getSongsAlbumDb();
+
+    @Query("Select * from SongDb where id = :songId")
+    SongsAlbumDb getSong(int songId);
 
 }

@@ -1,9 +1,9 @@
 package com.example.nstorflores.musicalizza;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 import com.example.nstorflores.musicalizza.Activities.RegisterLyricsActivity;
 import com.example.nstorflores.musicalizza.Activities.SignInActivity;
+
 import com.example.nstorflores.musicalizza.fragments.AlbumsFragment;
 import com.example.nstorflores.musicalizza.fragments.HomeFragment;
 import com.example.nstorflores.musicalizza.fragments.LyricsFragment;
 import com.example.nstorflores.musicalizza.fragments.MyOfflineLyricsFragment;
-import com.example.nstorflores.musicalizza.fragments.UnverifiedLyricsFragment;
 import com.tumblr.remember.Remember;
 
 public class MainActivity extends AppCompatActivity
@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         verifySession(navigationView);
-    }
+
+        }
 
     public void verifySession (NavigationView  navigationView){
         if (Remember.getString("access_token", "").isEmpty())
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentClass = AlbumsFragment.class;
                 break;
             case R.id.nav_artists:
-                backToSignInActivity();
+                //backToSignInActivity();
                 break;
             case R.id.nav_offline_lyrics:
                 fragmentClass = MyOfflineLyricsFragment.class;
