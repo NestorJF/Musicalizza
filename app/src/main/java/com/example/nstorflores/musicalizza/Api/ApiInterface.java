@@ -1,9 +1,13 @@
 package com.example.nstorflores.musicalizza.Api;
 
+import android.text.Html;
+
 import com.example.nstorflores.musicalizza.modelsAPI.AccessToken;
 import com.example.nstorflores.musicalizza.modelsAPI.Album;
 import com.example.nstorflores.musicalizza.modelsAPI.AlbumCreate;
 import com.example.nstorflores.musicalizza.modelsAPI.Artist;
+import com.example.nstorflores.musicalizza.modelsAPI.Image;
+import com.example.nstorflores.musicalizza.modelsAPI.ImageCreate;
 import com.example.nstorflores.musicalizza.modelsAPI.SongCreate;
 import com.example.nstorflores.musicalizza.modelsAPI.Song;
 import com.example.nstorflores.musicalizza.modelsAPI.User;
@@ -58,5 +62,10 @@ public interface ApiInterface {
 
     @POST("Users")
     Call<User> signUp(@Body UserCreate user);
+
+    //Image
+
+    @POST("Images")
+    Call<Image> createImage(@Body ImageCreate image);
 }
 

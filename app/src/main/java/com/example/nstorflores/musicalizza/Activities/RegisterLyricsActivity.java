@@ -1,5 +1,10 @@
 package com.example.nstorflores.musicalizza.Activities;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,9 +24,19 @@ import com.example.nstorflores.musicalizza.R;
 import com.example.nstorflores.musicalizza.modelsAPI.Album;
 import com.example.nstorflores.musicalizza.modelsAPI.AlbumCreate;
 import com.example.nstorflores.musicalizza.modelsAPI.Artist;
+import com.example.nstorflores.musicalizza.modelsAPI.Image;
+import com.example.nstorflores.musicalizza.modelsAPI.ImageCreate;
 import com.example.nstorflores.musicalizza.modelsAPI.SongCreate;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +51,7 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
     private Spinner album;
     private Spinner artist;
     private Button registerLyrics;
+    private ImageButton addImage;
 
     private List<Album> albums;
     private List<Artist> artists;
@@ -43,6 +60,13 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
     private int albumId = 0;
     private int genreId;
 
+    private final int PICK_IMAGE_REQUEST = 71;
+
+    private Uri filePath;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
+
+    private String uuid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +75,8 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
         setArtistSpinnerOptions();
         setTypeAlbumSpinnerOptions();
         initButtonClick();
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
     }
 
     public void initViews()
@@ -62,6 +88,7 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
         artist = findViewById(R.id.artist_spinner);
         registerLyrics = findViewById(R.id.register_lyrics);
         typeAlbumText = findViewById(R.id.type_album_text);
+        addImage = findViewById(R.id.add_image);
     }
 
     public void setTypeAlbumSpinnerOptions()
@@ -171,7 +198,6 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
                 }
             });
         }
-        else
 
 
 
@@ -200,19 +226,108 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
         if(parent.getId() == R.id.type_album_spinner)
         {
             Log.i("POS: ", "tipo album spinner: "+ position );
-            setAlbumSpinnerOptions(position);
+
+            if(position > 0)
+            {
+                setAlbumSpinnerOptions(position);
+                addImage.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                addImage.setVisibility(View.VISIBLE);
+                album.setAdapter(null);
+                albumId = 0;
+            }
+
+
         }
 
         if(parent.getId() == R.id.album_spinner)
         {
 
-            Album album = (Album) parent.getItemAtPosition(position);
-            albumId = album.getId();
-            genreId = album.getGenreId();
+            Album albumSelected = (Album) parent.getItemAtPosition(position);
+            albumId = albumSelected.getId();
+            genreId = albumSelected.getGenreId();
             Log.i("POS: ", "album spinner: "+ position +" album id :"+ albumId );
 
         }
         //setAlbumSpinnerOptions(position);
+
+    }
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                //imageView.setImageBitmap(bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void uploadImage() {
+
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            uuid = UUID.randomUUID().toString();
+            final StorageReference ref = storageReference.child("images/"+ uuid);
+
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterLyricsActivity.this, "Imagen subida", Toast.LENGTH_SHORT).show();
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                            {
+                                @Override
+                                public void onSuccess(Uri downloadUrl)
+                                {
+                                    Log.i("direccion firebase", String.valueOf(downloadUrl));
+                                    createSingleImage(String.valueOf(downloadUrl));
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(RegisterLyricsActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Subiendo "+(int)progress+"%");
+                        }
+                    });
+
+
+        }
+
 
     }
 
@@ -224,18 +339,38 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
 
                 if(!title.getText().toString().isEmpty() && !lyrics.getText().toString().isEmpty())
                 {
-                    if (albumId == 0)
-                    {
-                        createSingleAlbum();
-                    }
-                    else
-                    {
-                        createSong();
+                        Log.i("album id al seleccionar", ""+albumId);
+                        if (albumId == 0)
+                        {
+                            if(filePath!=null)
+                            {
+                                uploadImage();
+                            }
+                            else
+                            {
+                                Toast.makeText(RegisterLyricsActivity.this, "No ha seleccionado una imagen para el ", Toast.LENGTH_SHORT).show();
+
+                            }
+                        /*storage = FirebaseStorage.getInstance();
+                        storageReference = storage.getReference();
+
+                        StorageReference refUrl = storageReference.child("images/"+ uuid);*/
+                        }
+                        else
+                        {
+                            createSong();
+                        }
                     }
                 }
+        });
 
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+               chooseImage();
             }
         });
+
     }
 
     @Override
@@ -286,13 +421,13 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
         });
     }
 
-    private void createSingleAlbum()
+    private void createSingleAlbum(int imageId)
     {
 
         AlbumCreate album = new AlbumCreate();
         album.setArtistId(artistId);
-        album.setGenreId(genreId);
-        album.setImageId(1);
+        album.setGenreId(1);
+        album.setImageId(imageId);
         album.setType("Single");
         album.setYear(2018);
         album.setName(title.getText().toString() +" (Single)");
@@ -319,6 +454,41 @@ public class RegisterLyricsActivity extends AppCompatActivity implements Adapter
 
             @Override
             public void onFailure(Call<Album> call, Throwable t) {
+
+                Log.e(getString(R.string.error_message),t.getMessage());
+            }
+        });
+    }
+
+    private void createSingleImage(String url)
+    {
+
+        ImageCreate image = new ImageCreate();
+
+        image.setUrl(url);
+        image.setType("Disc");
+
+        Call<Image> call = Api.instance().createImage(image);
+
+        call.enqueue(new Callback<Image>() {
+            @Override
+            public void onResponse(Call<Image> call, Response<Image> response) {
+                if (response.body() != null) {
+
+                    Image imageResult  = response.body();
+                    Log.i("ALWE", "image result id: " + imageResult.getId());
+                    assert imageResult != null;
+                    createSingleAlbum(imageResult.getId());
+                }
+                else
+                {
+                    Log.i("PROBLEMA Single ALBUM", "hay error: "+ response.code());
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Image> call, Throwable t) {
 
                 Log.e(getString(R.string.error_message),t.getMessage());
             }

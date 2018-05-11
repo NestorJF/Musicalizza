@@ -1,6 +1,7 @@
 package com.example.nstorflores.musicalizza;
 
 
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.nstorflores.musicalizza.Activities.RegisterLyricsActivity;
 import com.example.nstorflores.musicalizza.Activities.SignInActivity;
 
+import com.example.nstorflores.musicalizza.db.AppDatabase;
 import com.example.nstorflores.musicalizza.fragments.AlbumsFragment;
 import com.example.nstorflores.musicalizza.fragments.HomeFragment;
 import com.example.nstorflores.musicalizza.fragments.LyricsFragment;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         verifySession(navigationView);
+            
 
         }
 

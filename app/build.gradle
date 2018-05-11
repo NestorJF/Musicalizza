@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -47,4 +48,10 @@ dependencies {
 
     implementation 'gun0912.ted:tedpermission:2.0.3'
 
+    implementation 'com.google.firebase:firebase-storage:9.2.1'
+    implementation 'com.google.firebase:firebase-auth:9.2.1'
+
+    //implementation 'com.google.firebase:firebase-core:15.0.2'
+
 }
+apply plugin: 'com.google.gms.google-services'
